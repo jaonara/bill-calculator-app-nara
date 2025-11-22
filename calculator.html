@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculator</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">
+      <div>
+        <img src="images/logo big.png" alt="logo" width="48" height="48">
+      </div>
+      <span class="logo-text">ElecBillPro</span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="user_dashboard.html" class="nav-link active">
+        <img src="images/bolt_pureblack.png" alt="Dashboard" class="nav-icon">
+        <span>Dashboard</span>
+      </a>
+        <a href="calculator.html" class="nav-link active">
+          <img src="images/calculator.png" alt="Calculator" class="nav-icon">
+          <span>Calculator</span>
+        </a>
+      <a href="results_page.html" class="nav-link active">
+          <img src="images/calculator.png" alt="Results" class="nav-icon">
+          <span>Results</span>
+        </a>      
+        <a href="profile.html" class="nav-link active">
+          <img src="images/profile.png" alt="Calculator" class="nav-icon">
+          <span>Profile</span>
+        </a>
+    </nav>
+  </header>
+
+  <main class="calculator-page">
+    <section class="calculator-hero">
+      <h1>Electricity Bill Calculator</h1>
+      <p>Calculate your monthly electricity bill based on consumption and rate.</p>
+    </section>
+
+    <div class="calculator-grid">
+      <div class="calculator-card">
+        <h2>Enter Bill Details</h2>
+        <p class="card-subtitle">Fill in your consumption data to calculate the total bill</p>
+
+        <form class="calculator-form" id="billForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="month">Billing Month</label>
+              <input id="month" name="month" type="text" placeholder="e.g., January" required>
+            </div>
+            <div class="form-group">
+              <label for="year">Year</label>
+              <input id="year" name="year" type="number" placeholder="e.g., 2025" required>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label for="consumption">Power Consumption (kWh)</label>
+            <input id="consumption" name="consumption" type="number" placeholder="Enter your total kilowatt-hours used this month" required>
+            <small>Enter your total kilowatt-hours used this month</small>
+          </div>
+
+          <div class="form-group full">
+            <label for="rate">Cost per kWh (₱)</label>
+            <input id="rate" name="rate" type="number" step="0.01" placeholder="Your electricity rate per kilowatt-hour" required>
+            <small>Your electricity rate per kilowatt-hour</small>
+          </div>
+
+          <button type="submit" class="btn btn-calculate">Calculate Bill</button>
+          <button type="button" id="resetBtn" class="btn btn-reset">Reset Calculator</button>
+        </form>
+      </div>
+
+      <aside class="summary-card" id="summaryCard" aria-live="polite">
+        <h2>Bill Summary</h2>
+        <p class="card-subtitle">Your calculated electricity bill</p>
+
+        <div class="summary-row">
+          <span class="label">Period</span>
+          <span id="sPeriod" class="value">—</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="label">Consumption</span>
+          <span id="sConsumption" class="value">— kWh</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="label">Rate</span>
+          <span id="sRate" class="value">— ₱/kWh</span>
+        </div>
+
+        <div class="summary-row total-row">
+          <span class="label">Total Bill</span>
+          <span id="sTotal" class="value">—</span>
+        </div>
+
+        <button id="saveBtn" class="btn btn-save" disabled>Save Result</button>
+        <a href="results_page.html" class="btn btn-view">View All Result →</a>
+      </aside>
+    </div>
+  </main>
+
+  <script src="js/calculator.js"></script>
+</body>
+</html>

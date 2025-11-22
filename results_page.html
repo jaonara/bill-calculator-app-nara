@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Results</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">
+      <div><img src="images/logo big.png" alt="logo" width="48" height="48"></div>
+      <span class="logo-text">ElecBillPro</span>
+    </a>
+    <nav class="nav-links">
+      <a href="user_dashboard.html" class="nav-link active">
+        <img src="images/bolt_pureblack.png" alt="Dashboard" class="nav-icon">
+        <span>Dashboard</span>
+      </a>
+      <a href="calculator.html" class="nav-link">
+        <img src="images/calculator.png" alt="Calculator" class="nav-icon">
+        <span>Calculator</span>
+      </a>
+      <a href="results_page.html" class="nav-link">
+        <img src="images/history2.png" alt="Results" class="nav-icon">
+        <span>Results</span>
+      </a>
+      <a href="profile.html" class="nav-link">
+        <img src="images/profile.png" alt="Profile" class="nav-icon">
+        <span>Profile</span>
+      </a>
+    </nav>
+  </header>
+
+  <main class="results-page">
+    <section class="calculator-hero">
+      <h1>Bill History</h1>
+      <p>View and manage your electricity bill records</p>
+    </section>
+
+    <section class="stats-grid" id="resultsStats">
+      <!-- top stat cards will be rendered by JS -->
+    </section>
+
+    <section class="insight-banner" id="insightBanner">
+      <!-- insight will be rendered by JS -->
+    </section>
+
+    <section class="all-bills-wrapper">
+      <div class="all-bills">
+        <div class="recent-header">
+          <h2>All Bills (<span id="totalCount">0</span>)</h2>
+        </div>
+        <div class="table-wrap" id="resultsTableContainer">
+          <!-- table rendered by JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/result_page.js"></script>
+</body>
+</html>

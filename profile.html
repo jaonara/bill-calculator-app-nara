@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profile</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <header>
+      <a href="index.html" class="logo">
+        <div>
+          <img src="images/logo big.png" alt="logo" width="48" height="48">
+        </div>
+        <span class="logo-text">ElecBillPro</span>
+      </a>
+
+    <nav class="nav-links">
+      <a href="user_dashboard.html" class="nav-link active">
+        <img src="images/bolt_pureblack.png" alt="Dashboard" class="nav-icon">
+        <span>Dashboard</span>
+      </a>
+      <a href="calculator.html" class="nav-link">
+        <img src="images/calculator.png" alt="Calculator" class="nav-icon">
+        <span>Calculator</span>
+      </a>
+      <a href="results_page.html" class="nav-link">
+        <img src="images/history2.png" alt="Results" class="nav-icon">
+        <span>Results</span>
+      </a>
+      <a href="profile.html" class="nav-link">
+        <img src="images/profile.png" alt="Profile" class="nav-icon">
+        <span>Profile</span>
+      </a>
+    </nav>
+    </header>
+
+    <main class="profile-page">
+      <h1 class="profile-title">Profile Settings</h1>
+
+      <section class="profile-card">
+      <div class="card-header">
+        <div class="card-title">
+          <h2>Personal Information</h2>
+          <p class="card-sub">Manage your account details</p>
+        </div>
+          <a href="/edit_profile.html" class="btn btn-edit">Edit Profile</a>
+        </div>
+        
+<!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="ep-title">
+      <div class="modal-content">
+        <span class="modal-close" data-close="true" aria-label="Close">&times;</span>
+        <h3 id="ep-title">Edit Profile</h3>
+        <form id="editProfileForm" class="modal-form" novalidate>
+          <label for="editFullname">Full Name</label>
+          <input id="editFullname" name="editFullname" type="text" placeholder="Full name">
+
+          <label for="editEmail">Email Address</label>
+          <input id="editEmail" name="editEmail" type="email" placeholder="Email address">
+
+          <label for="editAddress">Address</label>
+          <input id="editAddress" name="editAddress" type="text" placeholder="Address">
+
+          <label for="editPhone">Phone Number</label>
+          <input id="editPhone" name="editPhone" type="tel" placeholder="Phone number">
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-cancel" data-close="true">Cancel</button>
+            <button type="submit" class="btn btn-save">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+        <form class="profile-form" disabled>
+          <div class="form-group">
+            <label for="fullname"><img src="images/user.png" alt="User" class="label-icon"> Full Name</label>
+            <input id="fullname" type="text" placeholder="Full Name" disabled>
+          </div>
+
+          <div class="form-group">
+            <label for="email"><img src="images/email_small.png" alt="Email" class="label-icon"> Email Address</label>
+            <input id="email" type="email" placeholder="Email Address" disabled>
+          </div>
+
+          <div class="form-group">
+            <label for="address"><img src="images/address.png" alt="Address" class="label-icon"> Address</label>
+            <input id="address" type="text" placeholder="Address" disabled>
+          </div>
+
+          <div class="form-group">
+            <label for="phone"><img src="images/phone.png" alt="Phone" class="label-icon"> Phone Number</label>
+            <input id="phone" type="tel" placeholder="Phone Number" disabled>
+          </div>
+        </form>
+      </section>
+
+      <section class="profile-card">
+        <div class="card-header">
+          <div class="card-title">
+            <h2>Security</h2>
+            <p class="card-sub">Update your password</p>
+          </div>
+          <button type="button" class="btn btn-change-password">
+            <img src="images/lock_blue.png" alt="Lock" class="btn-icon"> Change Password
+          </button>
+        </div>
+      </section>
+
+      <section class="profile-card">
+        <div class="card-header">
+          <div class="card-title">
+            <h2>Sign Out</h2>
+            <p class="card-sub">Sign out from your account</p>
+          </div>
+          <button type="button" class="btn btn-logout"><img src="images/sign out.png" alt="Logout" class="btn-icon"> Logout</button>
+        </div>
+      </section>
+
+        <!-- Change Password Modal -->
+  <div id="changePasswordModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="cp-title">
+    <div class="modal-content">
+      <span class="modal-close" data-close="true" aria-label="Close">&times;</span>
+      <h3 id="cp-title">Change Password</h3>
+      <form id="changePasswordForm" class="modal-form" novalidate>
+        <label for="currentPassword">Current password</label>
+        <input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password">
+
+        <label for="newPassword">New password</label>
+        <input id="newPassword" name="newPassword" type="password" autocomplete="new-password">
+
+        <label for="confirmPassword">Confirm new password</label>
+        <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password">
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" data-close="true">Cancel</button>
+          <button type="submit" class="btn btn-save">Save Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+    </main>
+
+    <script src="js/profile.js"></script>
+</body>
+</html>

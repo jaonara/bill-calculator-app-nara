@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">
+      <div>
+        <img src="images/logo big.png" alt="logo" width="48" height="48">
+      </div>
+      <span class="logo-text">ElecBillPro</span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="user_dashboard.html" class="nav-link active">
+        <img src="images/bolt_pureblack.png" alt="Dashboard" class="nav-icon">
+        <span>Dashboard</span>
+      </a>
+      <a href="calculator.html" class="nav-link">
+        <img src="images/calculator.png" alt="Calculator" class="nav-icon">
+        <span>Calculator</span>
+      </a>
+      <a href="results_page.html" class="nav-link">
+        <img src="images/history2.png" alt="Results" class="nav-icon">
+        <span>Results</span>
+      </a>
+      <a href="profile.html" class="nav-link">
+        <img src="images/profile.png" alt="Profile" class="nav-icon">
+        <span>Profile</span>
+      </a>
+    </nav>
+  </header>
+
+  <main class="dashboard-page">
+    <section class="dashboard-hero">
+      <h1>Welcome back, <span id="userName">User</span>!</h1>
+      <p>Here's your electricity bill overview</p>
+    </section>
+
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><img src="images/peso small.png" alt="Total Bills" width="48" height="48"></div>
+        <h3>Total Bills</h3>
+        <p class="stat-value" id="totalBills">₱ 0.00</p>
+        <small>All time</small>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><img src="images/trend.png" alt="Average Bill" width="48" height="48"></div>
+        <h3>Average Bill</h3>
+        <p class="stat-value" id="avgBill">₱ 0.00</p>
+        <small>Per Month</small>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><img src="images/bolt_pureblack.png" alt="Total Usage" width="48" height="48"></div>
+        <h3>Total Usage</h3>
+        <p class="stat-value" id="totalUsage">0 kWh</p>
+        <small>All time</small>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><img src="images/trend.png" alt="Average Bill" width="48" height="48"></div>
+        <h3>Highest Bill</h3>
+        <p class="stat-value" id="highestBill">₱ 0.00</p>
+        <small>Peak Time</small>
+      </div>
+    </section>
+
+    <div class="dashboard-content">
+      <section class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="action-cards">
+          <a href="calculator.html" class="action-card">
+        <div class="stat-icon"><img src="images/calculator.png" alt="Calculator" width="48" height="48"></div>
+            <h4>Calculator</h4>
+            <p>Calculate your new bill</p>
+          </a>
+          <a href="results_page.html" class="action-card">
+        <div class="stat-icon"><img src="images/calculator.png" alt="Results" width="48" height="48"></div>
+            <h4>Results</h4>
+            <p>View Bill History</p>
+          </a>
+          <a href="profile.html" class="action-card">
+        <div class="stat-icon"><img src="images/profile.png" alt="Profile" width="48" height="48"></div>
+            <h4>Profile</h4>
+            <p>Manage account</p>
+          </a>
+        </div>
+      </section>
+
+      <section class="recent-bills">
+        <div class="recent-header">
+          <h2>Recent Bills</h2>
+          <a href="results_page.html" class="btn btn-view-all">View All</a>
+        </div>
+        <div id="recentBillsContainer" class="recent-bills-list">
+          <div class="empty-state">
+            <p>No bills yet</p>
+            <small>Start by calculating your first electricity bill</small>
+            <a href="calculator.html" class="btn btn-calculate-now">Calculate Now</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
