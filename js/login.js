@@ -1,29 +1,28 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const form = document.getElementById('loginForm');
-  form.addEventListener('submit', (e) => {
+  
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const email = form.email.value.trim();
     const password = form.password.value;
 
-    // load registered user (saved on register)
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    try {
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
 
-    if (currentUser && currentUser.email === email) {
-      // if password was saved on register, check it; otherwise allow login
-      if (currentUser.password && currentUser.password !== password) {
-        alert('Invalid credentials');
-        return;
-      }
+      if (error) throw error;
 
-      // mark as logged in and redirect to dashboard
+      // Store session info
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('lastLogin', new Date().toISOString());
+      
       window.location.href = 'user_dashboard.html';
-      return;
+    } catch (error) {
+      alert('Invalid credentials: ' + error.message);
+      console.error('Login error:', error);
     }
-
-    alert('No account found with that email. Please register first.');
-    window.location.href = 'register.html';
   });
 });

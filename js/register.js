@@ -1,7 +1,7 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
   const form = document.getElementById('registerForm');
 
-  form.addEventListener('submit', function (e) {
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const fullname = document.getElementById('fullname').value.trim();
@@ -17,23 +17,42 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // Extract first name
-    const firstName = fullname.split(' ')[0];
+    try {
+      // Sign up user with Supabase Auth
+      const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: {
+            fullname: fullname,
+            address: address,
+            phone: phone
+          }
+        }
+      });
 
-    // Save user data to localStorage
-    const userData = {
-      fullname: fullname,
-      firstName: firstName,
-      email: email,
-      address: address,
-      phone: phone,
-      createdAt: new Date().toISOString()
-    };
+      if (authError) throw authError;
 
-    localStorage.setItem('currentUser', JSON.stringify(userData));
-    localStorage.setItem('isLoggedIn', 'true');
-    
-    // Redirect to dashboard after successful registration
-    window.location.href = 'user_dashboard.html';
+      // Update profile with additional info (trigger should handle this, but update if needed)
+      if (authData.user) {
+        const { error: profileError } = await supabaseClient
+          .from('profiles')
+          .update({
+            address: address,
+            phone: phone
+          })
+          .eq('id', authData.user.id);
+
+        if (profileError) {
+          console.error('Error updating profile:', profileError);
+        }
+      }
+
+      alert('Registration successful! Please check your email to verify your account.');
+      window.location.href = 'login.html';
+    } catch (error) {
+      alert('Registration failed: ' + error.message);
+      console.error('Registration error:', error);
+    }
   });
 });

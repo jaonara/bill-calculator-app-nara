@@ -1,19 +1,18 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('passwordForm');
-  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+document.addEventListener('DOMContentLoaded', async function () {
+  // Check authentication
+  const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+  if (authError || !user) {
+    window.location.href = 'login.html';
+    return;
+  }
 
-  form.addEventListener('submit', function (e) {
+  const form = document.getElementById('passwordForm');
+
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const oldPassword = document.getElementById('oldPassword').value;
     const newPassword = document.getElementById('newPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-
-    // Validate old password
-    if (currentUser.password && currentUser.password !== oldPassword) {
-      alert('❌ Current password is incorrect');
-      return;
-    }
 
     // Validate new password length
     if (newPassword.trim().length < 6) {
@@ -27,10 +26,19 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // Update password
-    currentUser.password = newPassword;
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    alert('✅ Password changed successfully!');
-    window.location.href = 'profile.html';
+    try {
+      // Update password in Supabase
+      const { error } = await supabaseClient.auth.updateUser({
+        password: newPassword
+      });
+
+      if (error) throw error;
+
+      alert('✅ Password changed successfully!');
+      window.location.href = 'profile.html';
+    } catch (error) {
+      alert('Error changing password: ' + error.message);
+      console.error('Password change error:', error);
+    }
   });
 });

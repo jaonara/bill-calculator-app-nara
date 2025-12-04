@@ -1,19 +1,56 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const key = 'elecbill_results';
+document.addEventListener('DOMContentLoaded', async function () {
+  // Check authentication
+  const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+  if (authError || !user) {
+    window.location.href = 'login.html';
+    return;
+  }
 
-  // Get first name from registered user
-  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-  const firstName = currentUser.firstName || currentUser.fullname?.split(' ')[0] || 'User';
+  // Get user profile
+  const { data: profile, error: profileError } = await supabaseClient
+    .from('profiles')
+    .select('first_name, fullname')
+    .eq('id', user.id)
+    .single();
+
+  if (profileError) {
+    console.error('Error loading profile:', profileError);
+  }
+
+  const firstName = profile?.first_name || profile?.fullname?.split(' ')[0] || 'User';
   document.getElementById('userName').textContent = firstName;
 
-  function updateDashboard() {
-    const results = JSON.parse(localStorage.getItem(key) || '[]');
-    if (results.length === 0) return;
+  async function updateDashboard() {
+    const { data: results, error } = await supabaseClient
+      .from('bills')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching bills:', error);
+      return;
+    }
+
+    if (!results || results.length === 0) {
+      // Show empty state
+      const recentContainer = document.getElementById('recentBillsContainer');
+      if (recentContainer) {
+        recentContainer.innerHTML = `
+          <div class="empty-state">
+            <p>No bills yet</p>
+            <small>Start by calculating your first electricity bill</small>
+            <a href="calculator.html" class="btn btn-calculate-now">Calculate Now</a>
+          </div>
+        `;
+      }
+      return;
+    }
     
-    const totalBill = results.reduce((s,r) => s + (r.total||0), 0);
+    const totalBill = results.reduce((s, r) => s + parseFloat(r.total || 0), 0);
     const avgBill = totalBill / results.length;
-    const totalUsage = results.reduce((s,r) => s + (r.consumption||0), 0);
-    const highestBill = results.reduce((m,r) => Math.max(m, r.total||0), 0);
+    const totalUsage = results.reduce((s, r) => s + parseFloat(r.consumption || 0), 0);
+    const highestBill = results.reduce((m, r) => Math.max(m, parseFloat(r.total || 0)), 0);
 
     document.getElementById('totalBills').textContent = '₱ ' + totalBill.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     document.getElementById('avgBill').textContent = '₱ ' + avgBill.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -33,18 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
     `).join('');
   }
 
-  // initial
-  updateDashboard();
-
-  // realtime updates
-  try {
-    const bc = new BroadcastChannel('elecbill_channel');
-    bc.addEventListener('message', (ev) => {
-      if (ev.data && (ev.data.type === 'new_result' || ev.data.type === 'results_changed')) updateDashboard();
-    });
-  } catch (err) {
-    window.addEventListener('storage', (e) => {
-      if (e.key === 'elecbill_update' || e.key === key) updateDashboard();
-    });
-  }
+  // initial load
+  await updateDashboard();
 });

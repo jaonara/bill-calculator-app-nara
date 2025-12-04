@@ -1,4 +1,11 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+  // Check authentication
+  const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+  if (authError || !user) {
+    window.location.href = 'login.html';
+    return;
+  }
+
   const form = document.getElementById('billForm');
   const sPeriod = document.getElementById('sPeriod');
   const sConsumption = document.getElementById('sConsumption');
@@ -55,28 +62,32 @@ document.addEventListener('DOMContentLoaded', function () {
     sTotal.textContent = '—';
     saveBtn.disabled = true;
     resetBtn.style.display = 'none';
-    // keep summary visible (per request)
   });
 
-  saveBtn.addEventListener('click', function () {
+  saveBtn.addEventListener('click', async function () {
     if (saveBtn.disabled) return;
+    
     const data = JSON.parse(saveBtn.dataset.result || '{}');
-    const key = 'elecbill_results';
-    const existing = JSON.parse(localStorage.getItem(key) || '[]');
-    existing.unshift(data);
-    localStorage.setItem(key, JSON.stringify(existing));
-
-    // broadcast to other pages (dashboard / results) so they update instantly
+    
     try {
-      const bc = new BroadcastChannel('elecbill_channel');
-      bc.postMessage({ type: 'new_result', payload: data });
-      bc.close();
-    } catch (err) {
-      localStorage.setItem('elecbill_update', Date.now().toString());
-    }
+      const { error } = await supabaseClient
+        .from('bills')
+        .insert({
+          user_id: user.id,
+          period: data.period,
+          consumption: data.consumption,
+          rate: data.rate,
+          total: data.total
+        });
 
-    saveBtn.disabled = true;
-    saveBtn.textContent = 'Saved ✓';
-    setTimeout(() => { saveBtn.textContent = 'Save Result'; }, 1500);
+      if (error) throw error;
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saved ✓';
+      setTimeout(() => { saveBtn.textContent = 'Save Result'; }, 1500);
+    } catch (error) {
+      alert('Error saving bill: ' + error.message);
+      console.error('Save error:', error);
+    }
   });
 });
