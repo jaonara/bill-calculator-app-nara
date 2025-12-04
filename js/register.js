@@ -33,8 +33,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
       if (authError) throw authError;
 
-      // Update profile with additional info (trigger should handle this, but update if needed)
+      // Update profile with additional info (trigger should handle creation, we just update address/phone)
       if (authData.user) {
+        // Wait a moment for the trigger to create the profile
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
         const { error: profileError } = await supabaseClient
           .from('profiles')
           .update({
@@ -45,13 +48,23 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (profileError) {
           console.error('Error updating profile:', profileError);
+          // Don't throw - user is created, profile update is optional
         }
       }
 
       alert('Registration successful! Please check your email to verify your account.');
       window.location.href = 'login.html';
     } catch (error) {
-      alert('Registration failed: ' + error.message);
+      let errorMessage = error.message;
+      
+      // Provide more helpful error messages
+      if (error.message.includes('relation') && error.message.includes('does not exist')) {
+        errorMessage = 'Database tables not set up. Please run the schema.sql file in Supabase SQL Editor first.';
+      } else if (error.message.includes('profiles') || error.message.includes('bills')) {
+        errorMessage = 'Database error: ' + error.message + '\n\nMake sure you have run schema.sql in Supabase SQL Editor.';
+      }
+      
+      alert('Registration failed: ' + errorMessage);
       console.error('Registration error:', error);
     }
   });
